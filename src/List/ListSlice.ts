@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { httpClient } from '../api/client';
 import { Character } from '../types';
 
@@ -13,7 +13,7 @@ export function nextCharactersFetcher() {
   };
 }
 
-export const fetchCharacters = createAsyncThunk(
+export const fetchCharacters = createAsyncThunk<Character[]>(
   FETCH_CHARACTERS,
   nextCharactersFetcher(),
 );
@@ -35,17 +35,20 @@ const charactersSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchCharacters.fulfilled, (state, action) => {
-      state.loading = false;
-      state.characters = [...state.characters, ...action.payload.results];
-    });
-    builder.addCase(fetchCharacters.pending, (state) => {
-      state.loading = state.characters.length === 0;
-    });
-    builder.addCase(fetchCharacters.rejected, (state, action) => {
-      state.loading = false;
-      state.failure = action.payload;
-    });
+    builder.addCase(fetchCharacters.fulfilled, (state, action) => ({
+      ...state,
+      loading: false,
+      characters: [...state.characters, ...action.payload.results],
+    }));
+    builder.addCase(fetchCharacters.pending, state => ({
+      ...state,
+      loading: state.characters.length === 0,
+    }));
+    builder.addCase(fetchCharacters.rejected, (state, action) => ({
+      ...state,
+      loading: false,
+      failure: action.payload as Error,
+    }));
   },
 });
 
