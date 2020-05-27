@@ -2662,22 +2662,22 @@ escodegen@^1.14.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-oval-base@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-oval-base/-/eslint-config-oval-base-2.0.2.tgz#1122796ed3a32afbd8a9d6b907dc91bbe5d5d4cc"
-  integrity sha512-t5iC2qu4urNf6Cul1AsV6qJifnP+vag4xKXndbq4z+IIjZ+eL9xKJ5xm+8/WzyijCzAX3Yr+D1W9B4Bc3hGNOg==
+eslint-config-oval-base@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/eslint-config-oval-base/-/eslint-config-oval-base-2.0.3.tgz#790f4a5e1887de2cce56fa6af1541550e089a001"
+  integrity sha512-KILaAsBSJ9EPrJlMlqsTvRVxenECvU+jW4uglGEBqRcYOPAGlXrP7R4Px/gINdP9ZwPmCFjDmYYEmz00eBvM+A==
   dependencies:
     confusing-browser-globals "^1.0.9"
     object.assign "^4.1.0"
     object.entries "^1.1.0"
 
 eslint-config-oval@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-oval/-/eslint-config-oval-2.0.2.tgz#216b6eb2362ddf109916f2eaa7ec103081c96b2d"
-  integrity sha512-0KS18KSUbfLIITl6/8rEFfxnLG8m++f9gu3SjzYGCsUP/ctkBK0YdUn0MLz3o79M7TAkA369jj36wlCStiv5OQ==
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/eslint-config-oval/-/eslint-config-oval-2.0.3.tgz#8f2b8f70681c6570915c17b70f389b622aaf7fbd"
+  integrity sha512-uF/y87vmT7lef+iZsxAnonTTPQJC+vS9qOZDIx6vSmbK1vXxHRdG1LF55LXhSnvRDVtsXnwSwQa97ZYuBoGqug==
   dependencies:
     confusing-browser-globals "^1.0.9"
-    eslint-config-oval-base "^2.0.2"
+    eslint-config-oval-base "^2.0.3"
     object.assign "^4.1.0"
     object.entries "^1.1.0"
 
