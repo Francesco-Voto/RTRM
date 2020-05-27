@@ -1,12 +1,14 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import {
-  Text, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View, Image,
+  Text, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View, Image, NativeModules,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { fetchCharacters, ListState } from './ListSlice';
 import { Store, useAppDispatch } from '../Store';
 import { Character } from '../types';
 import { getStatusImage } from '../utils';
+
+const { StatusBarManager } = NativeModules;
 
 const styles = StyleSheet.create({
   card: {
@@ -64,8 +66,23 @@ const Separator = () => (
   <View style={styles.separator} />
 );
 
+const usePaddingTop = () => {
+  const [paddingTop, setPaddingTop] = useState(0);
+
+  useEffect(() => {
+    StatusBarManager.getHeight(({ height }: { height: number}) => {
+      setPaddingTop(height + 50);
+    });
+  }, []);
+
+  return paddingTop;
+};
+
 export const CharactersList = () => {
   const [end, setEnd] = useState(true);
+
+  const paddingTop = usePaddingTop();
+
   const { loading, failure, characters } = useSelector<Store, ListState>(state => state.characters);
 
   const dispatch = useAppDispatch();
@@ -96,7 +113,7 @@ export const CharactersList = () => {
   return (
     <FlatList
       data={characters}
-      contentContainerStyle={styles.contentContainer}
+      contentContainerStyle={[styles.contentContainer, { paddingTop }]}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       ItemSeparatorComponent={Separator}
