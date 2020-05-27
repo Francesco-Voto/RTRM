@@ -9,7 +9,7 @@ export function nextCharactersFetcher() {
   return async () => {
     page += 1;
     const { data } = await httpClient.get(`/character/?page=${page}`);
-    return data;
+    return data?.results || [];
   };
 }
 
@@ -38,7 +38,7 @@ const charactersSlice = createSlice({
     builder.addCase(fetchCharacters.fulfilled, (state, action) => ({
       ...state,
       loading: false,
-      characters: [...state.characters, ...action.payload.results],
+      characters: [...state.characters, ...action.payload],
     }));
     builder.addCase(fetchCharacters.pending, state => ({
       ...state,
@@ -51,7 +51,5 @@ const charactersSlice = createSlice({
     }));
   },
 });
-
-
 
 export const charactersReducer = charactersSlice.reducer;
