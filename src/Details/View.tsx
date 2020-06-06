@@ -1,8 +1,10 @@
 import React, { memo } from 'react';
 import {
-  Text, StyleSheet, View, Image, ScrollView,
+  Text, StyleSheet, View, Image,
 } from 'react-native';
 import { useSelector } from 'react-redux';
+import { ScrollView, NativeViewGestureHandler } from 'react-native-gesture-handler';
+import { GestureHandlerRefContext } from '@react-navigation/stack';
 import { Store } from '../reducers';
 import { CharacterState } from './reducers/character';
 import { getStatusImage } from '../utils';
@@ -44,9 +46,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,
   },
-  contentContainer: {
+  contentParent: {
     paddingHorizontal: 20,
     marginTop: 15,
+  },
+  contentContainer: {
+    paddingBottom: 20,
   },
 });
 
@@ -54,31 +59,37 @@ const CharacterDetails = () => {
   const { character } = useSelector<Store, CharacterState>(state => state.selectedCharacter);
 
   return (
-    <ScrollView>
-      <Image style={styles.image} source={{ uri: character?.image }} />
-      <View style={styles.contentContainer}>
-        <View style={styles.nameContainer}>
-          <Text style={styles.name}>{character?.name}</Text>
-          <Image source={getStatusImage(character?.status)} style={styles.status} />
-        </View>
-        <View style={styles.fieldContainer}>
-          <Text style={styles.titleField}>Gender</Text>
-          <Text style={styles.valueField}>{character?.gender}</Text>
-        </View>
-        <View style={styles.fieldContainer}>
-          <Text style={styles.titleField}>Species</Text>
-          <Text style={styles.valueField}>{character?.species}</Text>
-        </View>
-        <View style={styles.fieldContainer}>
-          <Text style={styles.titleField}>Gender</Text>
-          <Text style={styles.valueField}>{character?.gender}</Text>
-        </View>
-        <View style={styles.fieldContainer}>
-          <Text style={styles.titleField}>Origin</Text>
-          <Text style={styles.valueField}>{character?.origin.name}</Text>
-        </View>
-      </View>
-    </ScrollView>
+    <GestureHandlerRefContext.Consumer>
+      {ref => (
+        <NativeViewGestureHandler waitFor={ref}>
+          <ScrollView bounces={false} contentContainerStyle={styles.contentContainer}>
+            <Image style={styles.image} source={{ uri: character?.image }} />
+            <View style={styles.contentParent}>
+              <View style={styles.nameContainer}>
+                <Text style={styles.name}>{character?.name}</Text>
+                <Image source={getStatusImage(character?.status)} style={styles.status} />
+              </View>
+              <View style={styles.fieldContainer}>
+                <Text style={styles.titleField}>Gender</Text>
+                <Text style={styles.valueField}>{character?.gender}</Text>
+              </View>
+              <View style={styles.fieldContainer}>
+                <Text style={styles.titleField}>Species</Text>
+                <Text style={styles.valueField}>{character?.species}</Text>
+              </View>
+              <View style={styles.fieldContainer}>
+                <Text style={styles.titleField}>Gender</Text>
+                <Text style={styles.valueField}>{character?.gender}</Text>
+              </View>
+              <View style={styles.fieldContainer}>
+                <Text style={styles.titleField}>Origin</Text>
+                <Text style={styles.valueField}>{character?.origin.name}</Text>
+              </View>
+            </View>
+          </ScrollView>
+        </NativeViewGestureHandler>
+      )}
+    </GestureHandlerRefContext.Consumer>
   );
 };
 
