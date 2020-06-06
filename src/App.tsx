@@ -4,15 +4,15 @@ import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { store } from './Store';
-import { CharactersList } from './List/View';
+import { CharactersListView, CHARACTERS_LIST_VIEW } from './List/View';
 
 const RootStack = createStackNavigator();
 
 export function AppContainer() {
   return (
     <NavigationContainer>
-      <RootStack.Navigator mode="modal">
-        <RootStack.Screen name="Characters" component={CharactersList} />
+      <RootStack.Navigator mode="modal" headerMode="none">
+        <RootStack.Screen name={CHARACTERS_LIST_VIEW} component={CharactersListView} />
         <RootStack.Screen name="Details" component={() => null} />
       </RootStack.Navigator>
     </NavigationContainer>

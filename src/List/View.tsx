@@ -1,8 +1,11 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, {
+  useEffect, useCallback, useState, memo,
+} from 'react';
 import {
   Text, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View, Image, NativeModules,
 } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { fetchCharacters, ListState } from './ListSlice';
 import { Store, useAppDispatch } from '../Store';
 import { Character } from '../types';
@@ -52,15 +55,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const CharacterRow = ({ item }: { item: Character }) => (
-  <TouchableOpacity style={styles.card}>
-    <Image style={styles.cardImage} source={{ uri: item.image }} resizeMode="cover" />
-    <View style={styles.cardTitleContainer}>
-      <Text style={styles.cardTitle}>{item.name}</Text>
-      <Image source={getStatusImage(item.status)} style={styles.cardStatus} />
-    </View>
-  </TouchableOpacity>
-);
+const CharacterRow = ({ item, onPress }: { item: Character; onPress: (item: Character) => void }) => {
+  const onPressCharacter = useCallback(() => {
+    onPress(item);
+  }, [onPress, item]);
+
+  return (
+    <TouchableOpacity style={styles.card} onPress={onPressCharacter}>
+      <Image style={styles.cardImage} source={{ uri: item.image }} resizeMode="cover" />
+      <View style={styles.cardTitleContainer}>
+        <Text style={styles.cardTitle}>{item.name}</Text>
+        <Image source={getStatusImage(item.status)} style={styles.cardStatus} />
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const Separator = () => (
   <View style={styles.separator} />
@@ -78,8 +87,10 @@ const usePaddingTop = () => {
   return paddingTop;
 };
 
-export const CharactersList = () => {
+const CharactersList = () => {
   const [end, setEnd] = useState(true);
+
+  const navigation = useNavigation();
 
   const paddingTop = usePaddingTop();
 
@@ -98,9 +109,13 @@ export const CharactersList = () => {
     setEnd(true);
   };
 
+  const navigateToDetails = () => {
+    navigation.navigate('Details');
+  };
+
   const keyExtractor = useCallback(item => `${item.id}`, []);
 
-  const renderItem = useCallback(CharacterRow, []);
+  const renderItem = useCallback(({ item }) => <CharacterRow item={item} onPress={navigateToDetails} />, []);
 
   if (loading) {
     return <ActivityIndicator />;
@@ -126,3 +141,5 @@ export const CharactersList = () => {
 export const CHARACTERS_LIST_VIEW = 'CharactersList';
 
 CharactersList.displayName = CHARACTERS_LIST_VIEW;
+
+export const CharactersListView = memo(CharactersList);
