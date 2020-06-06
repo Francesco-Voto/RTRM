@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import { charactersReducer as characters } from './List/ListSlice';
+import { charactersReducer as characters } from '../List/ListSlice';
+import { characterReducer as selectedCharacter } from './character';
 
 export const store = configureStore({
   reducer: {
     characters,
+    selectedCharacter,
   },
 });
 

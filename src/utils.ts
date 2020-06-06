@@ -8,8 +8,8 @@ const StatusTable: Record<Status, ImageSourcePropType> = {
   unknown,
 };
 
-export const getStatusImage = (status: Status) => {
-  if (Object.prototype.hasOwnProperty.call(StatusTable, status)) {
+export const getStatusImage = (status?: Status) => {
+  if (status && Object.prototype.hasOwnProperty.call(StatusTable, status)) {
     return StatusTable[status];
   }
 

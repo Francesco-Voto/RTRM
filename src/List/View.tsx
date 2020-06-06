@@ -7,9 +7,11 @@ import {
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { fetchCharacters, ListState } from './ListSlice';
-import { Store, useAppDispatch } from '../Store';
+import { Store, useAppDispatch } from '../reducers';
+import { saveCharacter } from '../reducers/character';
 import { Character } from '../types';
 import { getStatusImage } from '../utils';
+import { CHARACTERS_LIST_VIEW, CHARACTERS_DETAILS_VIEW } from '../consts';
 
 const { StatusBarManager } = NativeModules;
 
@@ -109,8 +111,9 @@ const CharactersList = () => {
     setEnd(true);
   };
 
-  const navigateToDetails = () => {
-    navigation.navigate('Details');
+  const navigateToDetails = (selectedCharacter: Character) => {
+    dispatch(saveCharacter(selectedCharacter));
+    navigation.navigate(CHARACTERS_DETAILS_VIEW);
   };
 
   const keyExtractor = useCallback(item => `${item.id}`, []);
@@ -137,8 +140,6 @@ const CharactersList = () => {
     />
   );
 };
-
-export const CHARACTERS_LIST_VIEW = 'CharactersList';
 
 CharactersList.displayName = CHARACTERS_LIST_VIEW;
 
