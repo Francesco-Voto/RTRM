@@ -122,3 +122,7 @@ export const CharactersList = () => {
     />
   );
 };
+
+export const CHARACTERS_LIST_VIEW = 'CharactersList';
+
+CharactersList.displayName = CHARACTERS_LIST_VIEW;
