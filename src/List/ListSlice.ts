@@ -4,18 +4,18 @@ import { Character } from '../types';
 
 const FETCH_CHARACTERS = 'fetchCharacters';
 
-export function nextCharactersFetcher() {
+export function nextCharactersFetcher(client: typeof httpClient) {
   let page = 0;
   return async () => {
     page += 1;
-    const { data } = await httpClient.get(`/character/?page=${page}`);
+    const { data } = await client.get(`/character/?page=${page}`);
     return data?.results || [];
   };
 }
 
 export const fetchCharacters = createAsyncThunk<Character[]>(
   FETCH_CHARACTERS,
-  nextCharactersFetcher(),
+  nextCharactersFetcher(httpClient),
 );
 
 export type ListState = {
