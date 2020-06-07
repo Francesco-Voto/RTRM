@@ -13,8 +13,9 @@ const characterSlice = createSlice({
   name: 'details',
   initialState,
   reducers: {
-    saveCharacter(_, action) {
+    saveCharacter(state, action) {
       return ({
+        ...state,
         character: action.payload,
       });
     },
